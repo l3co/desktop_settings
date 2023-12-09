@@ -5,11 +5,18 @@ the official documentation
 """
 
 import platform
+from abc import ABC, abstractmethod
 
 import psutil
 
 
-class PlatformInfo:
+class Info(ABC):
+
+    @abstractmethod
+    def json(self) -> dict: ...
+
+
+class PlatformInfo(Info):
     def __init__(self):
         self.__node = platform.node()
         self.__machine = platform.machine()
@@ -58,7 +65,7 @@ class PlatformInfo:
         }
 
 
-class CoreSettings:
+class CoreSettings(Info):
 
     def __init__(self):
         self.__physical_cores = psutil.cpu_count(logical=False)
