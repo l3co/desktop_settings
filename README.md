@@ -7,7 +7,7 @@ settings.
 
 ### Technologies
 
-```python
-psutil == 5.9
-.6
 ```
+psutil == 5.9.6
+```
+
