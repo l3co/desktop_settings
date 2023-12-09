@@ -84,3 +84,77 @@ class CoreSettings(Info):
             'physical_cores': self.__physical_cores,
             'logical_cores': self.__logical_cores
         }
+
+
+class CoreFrequency(Info):
+
+    def __init__(self):
+        self.__cpu_freq_current = psutil.cpu_freq().current
+        self.__cpu_freq_min = psutil.cpu_freq().min
+        self.__cpu_freq_max = psutil.cpu_freq().max
+        self.__core_percent_utilization = psutil.cpu_percent(interval=1)
+        self.__each_core_percent_utilization = psutil.cpu_percent(interval=1, percpu=True)
+
+    @property
+    def cpu_freq_current(self):
+        return self.__cpu_freq_current
+
+    @property
+    def cpu_freq_min(self):
+        return self.__cpu_freq_min
+
+    @property
+    def cpu_freq_max(self):
+        return self.__cpu_freq_max
+
+    @property
+    def core_percent_utilization(self):
+        return self.__core_percent_utilization
+
+    @property
+    def each_core_percent_utilization(self):
+        return self.__each_core_percent_utilization
+
+    def json(self) -> dict:
+        return {
+            'cpu_freq_current': self.__cpu_freq_current,
+            'cpu_freq_min': self.__cpu_freq_min,
+            'cpu_freq_max': self.__cpu_freq_max,
+            'core_percent_utilization': self.__core_percent_utilization,
+            'each_core_percent_utilization': self.__each_core_percent_utilization
+        }
+
+
+class MemorySettings(Info):
+
+    def __init__(self):
+        # In GIGABYTE
+        self.__ram_installed = round(psutil.virtual_memory().total / 1000000000, 2)
+        self.__available_ram = round(psutil.virtual_memory().available / 1000000000, 2)
+        self.__used_ram = round(psutil.virtual_memory().used / 1000000000, 2)
+        # Percent
+        self.__ram_usage = psutil.virtual_memory().percent
+
+    @property
+    def ram_installed(self):
+        return self.__ram_installed
+
+    @property
+    def available_ram(self):
+        return self.__available_ram
+
+    @property
+    def used_ram(self):
+        return self.__used_ram
+
+    @property
+    def ram_usage(self):
+        return self.__ram_usage
+
+    def json(self) -> dict:
+        return {
+            'ram_installed': self.__ram_installed,
+            'available_ram': self.__available_ram,
+            'used_ram': self.__used_ram,
+            'ram_usage': self.__ram_usage
+        }
