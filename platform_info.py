@@ -5,6 +5,10 @@ the official documentation
 """
 
 import platform
+
+import psutil
+
+
 class PlatformInfo:
     def __init__(self):
         self.__node = platform.node()
@@ -51,4 +55,25 @@ class PlatformInfo:
             'platform': self.__platform,
             'system': self.__system,
             'version': self.__version
+        }
+
+
+class CoreSettings:
+
+    def __init__(self):
+        self.__physical_cores = psutil.cpu_count(logical=False)
+        self.__logical_cores = psutil.cpu_count(logical=True)
+
+    @property
+    def physical_cores(self):
+        return self.__physical_cores
+
+    @property
+    def logical_cores(self):
+        return self.__logical_cores
+
+    def json(self):
+        return {
+            'physical_cores': self.__physical_cores,
+            'logical_cores': self.__logical_cores
         }
